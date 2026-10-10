@@ -2,14 +2,14 @@ use std::vec;
 use sysinfo::{Disks, System};
 
 // Function to get any needed system info (ram or cpu for now)
-pub fn get_info(name: &str, mut sys: System) -> Vec<u64>{
+pub fn get_info(name: &str, sys: &mut System) -> u64{
     sys.refresh_all(); // Refreshes system to get updated data
 
     // Returns appropriate live data based on the chosen component
     match name {
-        "ram" => vec![sys.total_memory(), sys.used_memory()],
-        "cpu" => vec![(sys.global_cpu_usage() * 100.0) as u64],
-        _ => vec![0]
+        "ram" => sys.used_memory(),
+        "cpu" => (sys.global_cpu_usage() * 100.0) as u64,
+        _ => 0
     }
 }
 
